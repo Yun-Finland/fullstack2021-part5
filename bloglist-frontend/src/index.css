@@ -44,7 +44,7 @@ code {
   padding: 20px;
 }
 
-#removeButton {
+.removeButton {
   background: rgb(0, 195, 255);
   border-radius: 5px;
   border-style: none;

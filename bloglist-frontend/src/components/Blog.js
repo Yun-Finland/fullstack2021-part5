@@ -19,12 +19,12 @@ const Blog = ({ user, blog, updateLikes, removeBlog }) => {
 
   const showRestInfo = () => {
     return (
-      <div>
+      <div className="showAllInfo">
         {blog.url}<br/>
-        likes: {blog.likes} <button onClick={increaseLikes}>like</button><br/>
+        likes: {blog.likes} <button onClick={increaseLikes} className='likesButton'>like</button><br/>
         { blog.user.username }<br/>
         { blog.user.id === user.id
-          ? <button id='removeButton' onClick={removeHandle}>remove</button>
+          ? <button className='removeButton' onClick={removeHandle}>remove</button>
           : null
         }
       </div>
@@ -33,24 +33,13 @@ const Blog = ({ user, blog, updateLikes, removeBlog }) => {
 
   return (
     <div className='blog'>
-      {blog.title}, {blog.author} <button onClick={() => {setShowAll(!showAll)}}>{showAll?'hide' : 'view'}</button>
+      {blog.title}, {blog.author} <button className="showOrHide" onClick={() => {setShowAll(!showAll)}}>{showAll?'hide' : 'view'}</button>
       { showAll === true
-        ? <div> {showRestInfo()} </div>
+        ? <div > {showRestInfo()} </div>
         : null
       }
     </div>
   )
 }
 
-const Blogs = ({ user,blogs, updateLikes, removeBlog }) => blogs
-  .sort((a,b) => a.likes - b.likes)
-  .map(blog => {
-    return (
-      <ul key = {blog.id}>
-        <Blog blog ={blog} user={user} updateLikes={updateLikes} removeBlog={removeBlog}/>
-      </ul>
-    )
-
-  })
-
-export default Blogs
+export default Blog

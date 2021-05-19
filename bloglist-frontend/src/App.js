@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import blogService from './services/blogs'
-import Blogs from './components/Blogs.js'
+import Blog from './components/Blog.js'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
@@ -18,7 +18,7 @@ const App = () => {
     blogService
       .getAll()
       .then(initialBlogs => setBlogs(initialBlogs))
-  }, [blogs])
+  }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -93,9 +93,16 @@ const App = () => {
         ? <LoginForm setUser={setUser} setMessage ={setMessage} />
         : <div>
           {user.name} logged in <button onClick={handleLogout}>logout</button>
-          {blogForm()}
-
-          <Blogs user ={user} blogs = {blogs} updateLikes={updateLikes} removeBlog={removeBlog}/>
+          { blogForm() }
+          { blogs
+            .sort((a,b) => a.likes - b.likes)
+            .map(blog => {
+              return (
+                <ul key = {blog.id}>
+                  <Blog blog ={blog} user={user} updateLikes={updateLikes} removeBlog={removeBlog}/>
+                </ul>
+              )})
+          }
         </div>
       }
     </div>
