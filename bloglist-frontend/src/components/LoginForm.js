@@ -1,59 +1,59 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 
-const LoginForm = ({setUser, setMessage}) =>{
+const LoginForm = ({ setUser, setMessage }) => {
 
-  const [ username, setUsername ] = new useState("")
-  const [ password, setPassword ] = new useState("")
+  const [ username, setUsername ] = new useState('')
+  const [ password, setPassword ] = new useState('')
 
   const handleLogin = async (event) => {
     event.preventDefault()
-  
+
     try {
-      
+
       const user = await loginService.login({
         username, password,
       })
 
-      setUsername("")
-      setPassword("")
-  
+      setUsername('')
+      setPassword('')
+
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )
-  
+
       blogService.setToken(user.token)
-      setUser(user) 
-  
+      setUser(user)
+
     }catch (exception){
-      setMessage({content: 'wrong username or password', style: "error"})
+      setMessage({ content: 'wrong username or password', style: 'error' })
       setTimeout( () => {
-        setMessage({content: null, style: null})
+        setMessage({ content: null, style: null })
       },5000)
     }
-    
+
   }
 
   return (
     <div>
       <form onSubmit = {handleLogin}>
         <div>
-          username 
-          <input 
-            type="text" 
-            value={username} 
+          username
+          <input
+            type="text"
+            value={username}
             name="username"
-            onChange = {({target}) => setUsername(target.value)}
+            onChange = {({ target }) => setUsername(target.value)}
           />
         </div>
         <div>
           password
-          <input 
+          <input
             type ="text"
             value = {password}
             name = "password"
-            onChange = {({target})=>setPassword(target.value)}
+            onChange = {({ target }) => setPassword(target.value)}
           />
         </div>
         <button type ="submit">login</button>

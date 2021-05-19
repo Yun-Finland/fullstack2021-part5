@@ -1,58 +1,56 @@
 import React,{ useState } from 'react'
 
-const Blog = ({user, blog, updateLikes, removeBlog}) => {
+const Blog = ({ user, blog, updateLikes, removeBlog }) => {
   const [showAll, setShowAll] = new useState(false)
-  const [currentBlog, setCurrentBlog ] = new useState(blog)
 
-  const increaseLikes = (event)=>{
+  const increaseLikes = (event) => {
     event.preventDefault()
-    const blogObject = {...currentBlog, likes: currentBlog.likes+1,}
-    updateLikes(blogObject)  
-    setCurrentBlog(blogObject)    
+    const blogObject = { ...blog, likes: blog.likes+1, }
+    updateLikes(blogObject)
   }
 
-  const removeHandle = (event) =>{
+  const removeHandle = (event) => {
     event.preventDefault()
 
-    if(window.confirm("Are you sure you want to delelte this blog?")){
-       removeBlog(blog)
+    if(window.confirm('Are you sure you want to delelte this blog?')){
+      removeBlog(blog)
     }
   }
 
-  const showRestInfo = () =>{
+  const showRestInfo = () => {
     return (
       <div>
-        {currentBlog.url}<br/>
-        likes: {currentBlog.likes} <button onClick={increaseLikes}>like</button><br/>      
-        { currentBlog.user.username }<br/>  
-        { currentBlog.user.id === user.id
+        {blog.url}<br/>
+        likes: {blog.likes} <button onClick={increaseLikes}>like</button><br/>
+        { blog.user.username }<br/>
+        { blog.user.id === user.id
           ? <button id='removeButton' onClick={removeHandle}>remove</button>
           : null
-        }        
-      </div> 
+        }
+      </div>
     )
   }
 
   return (
     <div className='blog'>
-      {blog.title}, {blog.author} <button onClick={()=>{setShowAll(!showAll)}}>{showAll?"hide" : "view"}</button>
+      {blog.title}, {blog.author} <button onClick={() => {setShowAll(!showAll)}}>{showAll?'hide' : 'view'}</button>
       { showAll === true
         ? <div> {showRestInfo()} </div>
-        : null                
+        : null
       }
     </div>
   )
 }
 
-const Blogs = ({user,blogs, updateLikes, removeBlog}) => blogs
-  .sort((a,b)=>a.likes - b.likes)
+const Blogs = ({ user,blogs, updateLikes, removeBlog }) => blogs
+  .sort((a,b) => a.likes - b.likes)
   .map(blog => {
     return (
-      <ul key = {blog.id}> 
+      <ul key = {blog.id}>
         <Blog blog ={blog} user={user} updateLikes={updateLikes} removeBlog={removeBlog}/>
       </ul>
     )
-    
-})
+
+  })
 
 export default Blogs
