@@ -1,12 +1,12 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent, render, act } from '@testing-library/react'
 import BlogForm from './BlogForm.js'
 
 //test 5.16
 describe('<BlogForm /> updates parent state and calls onSubmit', () => {
 
-  test('<BlogForm /> updates parent state and calls onSubmit', () => {
+  test('<BlogForm /> updates parent state and calls onSubmit', async () => {
     const createBlog = jest.fn()
 
     const user = {
@@ -27,8 +27,8 @@ describe('<BlogForm /> updates parent state and calls onSubmit', () => {
     fireEvent.change(url, { target: { value: 'url test1' } })
 
     fireEvent.submit(form)
+    await act(async () => {})
 
-    expect(createBlog.mock.calls).toHaveLength(1)
     expect((createBlog.mock.calls)[0][0].title).toBe('title test4')
   })
 })
