@@ -87,7 +87,7 @@ const App = () => {
         {user === null ? 'Log in to application' : 'Blogs' }
       </h1>
 
-      <Notification message = {message} />
+      <Notification id="notification" message = {message} />
 
       {user === null
         ? <LoginForm setUser={setUser} setMessage ={setMessage} />
