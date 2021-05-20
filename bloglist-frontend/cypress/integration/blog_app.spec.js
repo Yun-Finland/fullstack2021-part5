@@ -19,7 +19,14 @@ describe('Blog app', function(){
         name: 'yun testtest',
         password: 'yuntestpassword'
       }
+
+      const user2 = {
+        username: 'yun test1.1',
+        name: 'yun testtest1.1',
+        password: 'yuntestpassword1.1'
+      }
       cy.request('POST', 'http://localhost:3003/api/users/', user)
+      cy.request('POST', 'http://localhost:3003/api/users/', user2)
       cy.visit('http://localhost:3000')
     })
 
@@ -79,6 +86,18 @@ describe('Blog app', function(){
           cy.contains('view').click()
           cy.get('.likesButton').click()
           cy.contains('Title test2').parent().contains('likes: 1')
+        })
+
+        it('User who created a blog have the access to delete that blog', function(){
+          cy.contains('Title test2').parent().as('theBlog')
+          cy.get('@theBlog').contains('view').click()
+          cy.get('@theBlog').contains('remove').click()
+        })
+
+        it('User can only delete the blogs they created', function(){
+          cy.contains('logout').click()
+          cy.login({ username: 'yun test1.1', password: 'yuntestpassword1.1' })
+          cy.contains('Title test2').parent().get('.removeButton').should('not.exist')
         })
       })
     })
