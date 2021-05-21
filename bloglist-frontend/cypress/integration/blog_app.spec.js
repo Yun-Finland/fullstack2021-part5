@@ -73,18 +73,25 @@ describe('Blog app', function(){
           cy.createBlog({
             title: 'Title test2',
             author: 'Author test2',
-            url: 'URL test2'
+            url: 'URL test2',
+            likes:0
           })
           cy.createBlog({
             title: 'Title test3',
             author: 'Author test3',
-            url: 'URL test3'
+            url: 'URL test3',
+            likes: 25
+          })
+          cy.createBlog({
+            title: 'Title test4',
+            author: 'Author test4',
+            url: 'URL test4',
+            likes: 365
           })
         })
 
         it('User can like a blog', function(){
-          cy.contains('view').click()
-          cy.get('.likesButton').click()
+          cy.contains('Title test2').parent().contains('view').click().get('.likesButton').click()
           cy.contains('Title test2').parent().contains('likes: 1')
         })
 
@@ -92,12 +99,19 @@ describe('Blog app', function(){
           cy.contains('Title test2').parent().as('theBlog')
           cy.get('@theBlog').contains('view').click()
           cy.get('@theBlog').contains('remove').click()
+          cy.get('html').should('not.contain', 'Titel test2')
         })
 
         it('User can only delete the blogs they created', function(){
           cy.contains('logout').click()
           cy.login({ username: 'yun test1.1', password: 'yuntestpassword1.1' })
           cy.contains('Title test2').parent().get('.removeButton').should('not.exist')
+        })
+
+        it('Several blogs are sorted by likes most first', function(){
+          cy.get('.blog').eq(0).contains('Title test4').should('exist')
+          cy.get('.blog').eq(1).contains('Title test3').should('exist')
+          cy.get('.blog').eq(2).contains('Title test2').should('exist')
         })
       })
     })
